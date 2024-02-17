@@ -1,6 +1,7 @@
 'use server'
 
-import bcrypt from 'bcrypt'
+// import { hashSync } from 'bcrypt'
+import { compare, genSaltSync, hashSync } from 'bcrypt-ts'
 import type { z } from 'zod'
 
 import { createUser, getUserByEmail } from '@/db/methods/user'
@@ -25,11 +26,12 @@ export const signUp = async (
   const { email, password, nickname } = validatedFields.data
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const salt = genSaltSync(10)
+    const hashedPassword = hashSync(password, salt)
 
     const existingUser = await getUserByEmail(email)
 
-    if (existingUser) {
+    if (existingUser !== null && existingUser.length > 0) {
       return {
         isSuccess: false,
         error: {
@@ -38,10 +40,7 @@ export const signUp = async (
       }
     }
 
-    // await createUser(email, hashedPassword, nickname)
-    const user = await createUser(email, hashedPassword, nickname)
-
-    console.log('user', user)
+    await createUser(email, hashedPassword, nickname)
 
     return {
       isSuccess: true,

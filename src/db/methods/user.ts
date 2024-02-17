@@ -17,6 +17,7 @@ export const getUserByEmail = async (email: string) => {
 export const getUserById = async (id: string) => {
   try {
     const user = await db.select().from(users).where(eq(users.id, id))
+    console.log('user', user)
     return user
   } catch (error) {
     console.error(error)
@@ -35,7 +36,7 @@ export const createUser = async (
       password,
       name,
     })
-    return user
+    return { message: 'ok' }
   } catch (error) {
     console.error(error)
     return null
