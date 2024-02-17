@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { signUpSchema } from '@/lib/schemas'
+import { signUpSchema } from '@/lib/schemas/auth'
 
 export function SignUpForm() {
   const [error, setError] = useState<string | undefined>('')
