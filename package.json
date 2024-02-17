@@ -12,7 +12,9 @@
     "format": "run-s format:prettier format:eslint",
     "format:eslint": "bun run lint:eslint --fix",
     "format:prettier": "bun run lint:prettier --write",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "db:generate": "bun run drizzle-kit generate:pg --config drizzle.config.ts",
+    "db:push": "bun run drizzle-kit push:pg --config drizzle.config.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -24,9 +26,12 @@
     "@radix-ui/react-switch": "^1.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "dotenv": "^16.4.4",
+    "drizzle-orm": "^0.29.3",
     "lucide-react": "^0.331.0",
     "next": "14.1.0",
     "next-themes": "^0.2.1",
+    "postgres": "^3.4.3",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.50.1",
@@ -41,6 +46,7 @@
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "autoprefixer": "^10.0.1",
+    "drizzle-kit": "^0.20.14",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "eslint-config-prettier": "^9.1.0",

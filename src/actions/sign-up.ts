@@ -2,7 +2,7 @@
 
 import type { z } from 'zod'
 
-import { signUpSchema } from '@/lib/schemas'
+import { signUpSchema } from '@/lib/schemas/auth'
 import type { ActionsResult } from '@/types/actions-result'
 
 export const signUp = async (
