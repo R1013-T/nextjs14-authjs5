@@ -1,5 +1,10 @@
 import { auth } from './auth'
-import { apiAuthPrefix, authRoutes, publicRoutes } from './routes'
+import {
+  apiAuthPrefix,
+  authRoutes,
+  DEFAULT_LOGIN_REDIRECT,
+  publicRoutes,
+} from './routes'
 
 export default auth((req): any => {
   const { nextUrl } = req
@@ -14,7 +19,9 @@ export default auth((req): any => {
   }
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return Response.redirect(new URL('/', nextUrl.toString()))
+      return Response.redirect(
+        new URL(DEFAULT_LOGIN_REDIRECT, nextUrl.toString()),
+      )
     }
     return null
   }

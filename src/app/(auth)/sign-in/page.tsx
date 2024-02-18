@@ -1,21 +1,21 @@
 import Link from 'next/link'
 
-import { SignUpForm } from '@/components/auth/sign-up/form'
+import { SignInForm } from '@/components/auth/sign-in/form'
 import { buttonVariants } from '@/components/ui/button'
 
-export default function SignUpPage() {
+export default function SignInPage() {
   return (
     <div>
-      <SignUpForm />
+      <SignInForm />
       <Link
         className={buttonVariants({
           variant: 'link',
           size: 'sm',
           className: 'mt-4',
         })}
-        href={'/sign-in'}
+        href={'/sign-up'}
       >
-        ログインはこちら
+        新規登録はこちら
       </Link>
     </div>
   )
