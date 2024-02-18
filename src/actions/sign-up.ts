@@ -31,7 +31,7 @@ export const signUp = async (
 
     const existingUser = await getUserByEmail(email)
 
-    if (existingUser !== null && existingUser.length > 0) {
+    if (existingUser) {
       return {
         isSuccess: false,
         error: {

@@ -58,7 +58,7 @@ export function SignUpForm() {
             <FormItem>
               <FormLabel>ニックネーム</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
