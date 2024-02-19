@@ -36,14 +36,13 @@ export function SignInForm() {
     setError('')
 
     startTransition(async () => {
+
       const result = await signIn(values)
 
       if (!result.isSuccess) {
         setError(result.error.message)
         return
       }
-
-      toast.success(result.message)
     })
   }
 

@@ -19,6 +19,8 @@ export default {
 
           const passwordMatch = await compare(password, user.password)
 
+          console.log("auth config credentials", user)
+
           if (passwordMatch) return user
         }
 

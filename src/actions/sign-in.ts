@@ -24,6 +24,7 @@ export const signIn = async (
     }
   }
 
+
   const { email, password } = validatedFields.data
 
   const existingUser = await getUserByEmail(email)
@@ -37,12 +38,12 @@ export const signIn = async (
     }
   }
 
+
   try {
     await signInByAuthJS('credentials', {
       email,
       password,
-      // redirectTo: DEFAULT_LOGIN_REDIRECT,
-      redirectTo: '/',
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
     })
 
     return {

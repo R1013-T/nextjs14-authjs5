@@ -1,7 +1,9 @@
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import NextAuth from 'next-auth'
 
+import { getUserById } from '@/db/methods/user'
 import { db } from '@/lib/utils/database'
+import type { UserRole } from '@/types/user'
 
 import authConfig from './auth.config'
 
@@ -11,6 +13,29 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
+  pages: {
+    signIn: '/sign-in',
+  },
+  callbacks: {
+    async session({ token, session }) {
+      if (token.sub && session.user) {
+        session.user.id = token.sub
+      }
+      
+      //? roleがsessionに追加されないので、DBから取得して追加する
+      const user = await getUserById(session.user.id)
+      session.user.role = user?.role as UserRole
+
+      return session
+    },
+    async jwt({ token }) {
+      if (!token.sub) return token
+      const existingUser = await getUserById(token.sub)
+      if (!existingUser) return token
+      token.role = existingUser.role
+      return token
+    },
+  },
   adapter: DrizzleAdapter(db),
   session: { strategy: 'jwt' },
   secret: '02Xnq2x51UOXM2cm2GYBoW4RYZsayfZoP4+8DZDALZg=',

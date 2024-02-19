@@ -36,6 +36,8 @@ export function SignUpForm() {
   const onSubmit = (values: z.infer<typeof signUpSchema>) => {
     setError('')
 
+    console.log('sign up')
+
     startTransition(async () => {
       const result = await signUp(values)
 
