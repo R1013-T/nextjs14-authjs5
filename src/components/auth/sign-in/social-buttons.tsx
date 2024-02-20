@@ -9,7 +9,7 @@ import { DEFAULT_LOGIN_REDIRECT } from '../../../../routes'
 export const SocialButtons = () => {
   const handleClick = (provider: 'google' | 'github') => {
     signIn(provider, {
-      callbackUrl: '/',
+      callbackUrl: DEFAULT_LOGIN_REDIRECT,
     })
   }
 

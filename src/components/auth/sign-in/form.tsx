@@ -1,9 +1,9 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useSearchParams } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import type * as z from 'zod'
 
 import { signIn } from '@/actions/sign-in'
@@ -24,12 +24,6 @@ export function SignInForm() {
   const [error, setError] = useState<string | undefined>('')
   const [isPending, startTransition] = useTransition()
 
-  const searchParams = useSearchParams()
-  const urlError =
-    searchParams.get('error') === 'OAuthAccountNotLinked'
-      ? 'このメールアドレスは既に別のプロバイダーで登録されています。'
-      : ''
-
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -48,6 +42,8 @@ export function SignInForm() {
         setError(result.error.message)
         return
       }
+
+      toast.success(result.message)
     })
   }
 
@@ -80,7 +76,7 @@ export function SignInForm() {
             </FormItem>
           )}
         />
-        <FormError message={error || urlError} />
+        <FormError message={error} />
         <Button type="submit" disabled={isPending}>
           ログイン
         </Button>
