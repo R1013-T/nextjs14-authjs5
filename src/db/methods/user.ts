@@ -1,4 +1,5 @@
 import { eq } from 'drizzle-orm'
+import { v4 as uuidv4 } from 'uuid'
 
 import { db } from '@/lib/utils/database'
 
@@ -32,6 +33,7 @@ export const createUser = async (
 ) => {
   try {
     const user = await db.insert(users).values({
+      id: uuidv4(),
       email,
       password,
       name,

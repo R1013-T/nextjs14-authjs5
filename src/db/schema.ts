@@ -1,37 +1,65 @@
-import { type InferInsertModel, type InferSelectModel } from 'drizzle-orm'
-import { date, integer, pgEnum, pgTable, text, uuid } from 'drizzle-orm/pg-core'
+import type { AdapterAccount } from '@auth/core/adapters'
+import {
+  integer,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+} from 'drizzle-orm/pg-core'
 
 export const roleEnum = pgEnum('role', ['admin', 'user'])
 
-export const users = pgTable('users', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  name: text('name').notNull(),
-  email: text('email').notNull().unique(),
-  email_verified: date('email_verified'),
+export const users = pgTable('user', {
+  id: text('id').notNull().primaryKey(),
+  name: text('name'),
+  email: text('email').notNull(),
+  emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
-  password: text('password').notNull(),
-  role: roleEnum('role').notNull().default('user'),
+  role: roleEnum('role').default('user'),
+  password: text('password'),
 })
 
-export const accounts = pgTable('accounts', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  user_id: uuid('user_id')
+export const accounts = pgTable(
+  'account',
+  {
+    userId: text('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    type: text('type').$type<AdapterAccount['type']>().notNull(),
+    provider: text('provider').notNull(),
+    providerAccountId: text('providerAccountId').notNull(),
+    refresh_token: text('refresh_token'),
+    access_token: text('access_token'),
+    expires_at: integer('expires_at'),
+    token_type: text('token_type'),
+    scope: text('scope'),
+    id_token: text('id_token'),
+    session_state: text('session_state'),
+  },
+  (account) => ({
+    compoundKey: primaryKey({
+      columns: [account.provider, account.providerAccountId],
+    }),
+  }),
+)
+
+export const sessions = pgTable('session', {
+  sessionToken: text('sessionToken').notNull().primaryKey(),
+  userId: text('userId')
     .notNull()
-    .references(() => users.id),
-  type: text('type').notNull(),
-  provider: text('provider').notNull(),
-  provider_account_id: text('provider_account_id').notNull(),
-  refresh_token: text('refresh_token'),
-  access_token: text('access_token'),
-  expires_at: integer('expires_at'),
-  token_type: text('token_type'),
-  scope: text('scope'),
-  id_token: text('id_token'),
-  session_state: text('session_state'),
+    .references(() => users.id, { onDelete: 'cascade' }),
+  expires: timestamp('expires', { mode: 'date' }).notNull(),
 })
 
-export type SelectTodo = InferSelectModel<typeof users>
-export type InsertTodo = InferInsertModel<typeof users>
-
-export type SelectAccount = InferSelectModel<typeof accounts>
-export type InsertAccount = InferInsertModel<typeof accounts>
+export const verificationTokens = pgTable(
+  'verificationToken',
+  {
+    identifier: text('identifier').notNull(),
+    token: text('token').notNull(),
+    expires: timestamp('expires', { mode: 'date' }).notNull(),
+  },
+  (vt) => ({
+    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
+  }),
+)
