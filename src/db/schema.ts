@@ -15,7 +15,9 @@ export const users = pgTable('users', {
 
 export const accounts = pgTable('accounts', {
   id: uuid('id').defaultRandom().primaryKey(),
-  user_id: uuid('user_id').notNull().references(() => users.id),
+  user_id: uuid('user_id')
+    .notNull()
+    .references(() => users.id),
   type: text('type').notNull(),
   provider: text('provider').notNull(),
   provider_account_id: text('provider_account_id').notNull(),

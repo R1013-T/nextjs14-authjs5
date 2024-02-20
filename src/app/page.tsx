@@ -1,3 +1,5 @@
+import SignOutButton from '@/components/auth/sign-out/button'
+
 import { auth } from '../../auth'
 
 async function Home() {
@@ -12,6 +14,7 @@ async function Home() {
         <p>email: {session?.user?.email}</p>
         <p>role: {session?.user?.role}</p>
       </div>
+      <SignOutButton />
     </article>
   )
 }

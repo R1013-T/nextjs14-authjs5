@@ -21,7 +21,7 @@ export const {
       if (token.sub && session.user) {
         session.user.id = token.sub
       }
-      
+
       //? roleがsessionに追加されないので、DBから取得して追加する
       const user = await getUserById(session.user.id)
       session.user.role = user?.role as UserRole
@@ -38,6 +38,6 @@ export const {
   },
   adapter: DrizzleAdapter(db),
   session: { strategy: 'jwt' },
-  secret: '02Xnq2x51UOXM2cm2GYBoW4RYZsayfZoP4+8DZDALZg=',
+  secret: process.env.AUTH_SECRET,
   ...authConfig,
 })
